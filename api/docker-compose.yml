@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb_globocard
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/robertocpaes/mongodb:/data/db
+    ports:
+      - 27017:27017
+    restart: always
+  server:
+    build: .
+    container_name:  api_globocard
+    command: python start.py
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    environment:
+      MONGO_HOST: mongodb
+    ports:
+      - "5000:5000"
+    restart: always
+    volumes:
+      - ./:/code
+    links:
+      - mongodb
