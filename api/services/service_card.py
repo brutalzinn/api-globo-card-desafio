@@ -17,12 +17,14 @@ def getOneCard(id):
         return False
 
 
-def getAllCards(tag_id):
-    cardResult = mongo.db.cards.find({"tags":tag_id})
+def getAllCards(tag_id, page, limit):
+    print(f'page:{page} limit:{limit}')
+    cardResult = mongo.db.cards.aggregate([{ "$skip": (page - 1)* limit},{ "$limit": limit * 1 }])
     cardList = []
     for c in cardResult:
         c['_id'] = str(c['_id'])
         c['id'] = c.pop('_id')
+        print(c)
         cardList.append(c)
     if len(cardList) > 0:
         return jsonify(cardList)

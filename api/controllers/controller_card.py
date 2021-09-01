@@ -8,9 +8,10 @@ app, api, mongo = server.app, server.api, server.mongo
 class CardClass(Resource):
 
 
-    def get(self,card_id = None, tag_id = None):
+    def get(self,card_id = None, tag_id = None, page = 1, limit = 5):
       if card_id == None:
-        cards = getAllCards(tag_id)
+        cards = getAllCards(tag_id, int(page), int(limit))
+        print('get all cards')
       else:
         cards = getOneCard(card_id)
       if cards is not False:
@@ -44,4 +45,5 @@ class CardClass(Resource):
 
 api.add_resource(CardClass, '/cards/tag/<tag_id>')
 api.add_resource(CardClass, '/cards/<card_id>')
+api.add_resource(CardClass, '/cards/list/page/<page>/limit/<limit>')
 api.add_resource(CardClass, '/cards')
