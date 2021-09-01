@@ -1,26 +1,20 @@
-from flask import Flask
+from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 
 
+app, api, mongo = server.app, server.api, server.mongo
 
-app, api = server.app, server.api
-
-card_teste = [{
-  "id": 0,
-  "texto": 'texto do card',
-  "data_criacao":'data',
-  "data_modificacao":'data update',
-  "tags":['tag1','tag2']
-},
-{
-  "id": 1,
-  "texto": 'texto do card 1',
-  "data_criacao":'data 1 ',
-  "data_modificacao":'data update 1',
-  "tags":['tag3','tag4']
-}]
-@api.route('/teste')
+@api.route('/cards')
 class CardClass(Resource):
-    def get(self, ):
-        return card_teste
+    def get(self):
+        cards = mongo.db.cards.find()
+        cardList = []
+        for c in cards:
+          cardList.append({'id':str(c['_id']),'texto': c['texto'],'tags':c['tags']})
+        return jsonify(cardList)
+
+    def post(self):
+        req_data = api.payload
+        mongo.db.cards.insert_one(req_data)
+        return ({"message":"Card inserted successfully"}, 200)
