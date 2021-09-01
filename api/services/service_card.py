@@ -18,7 +18,7 @@ def getOneCard(id):
 
 
 def getAllCards(tag_id):
-    cardResult = mongo.db.cards.aggregate([{
+    filtros = [{
    "$lookup":
      {
        "from": "tags",
@@ -26,7 +26,13 @@ def getAllCards(tag_id):
        "foreignField": "_id",
        "as": "tags"
      }
-}])
+}]
+
+    if tag_id:
+        filtros.append({"$match": {
+        "tags._id": ObjectId(tag_id)
+      }})
+    cardResult = mongo.db.cards.aggregate(filtros)
     cardList = []
     for c in cardResult:
         listTags = []
