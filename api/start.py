@@ -1,4 +1,4 @@
-from controllers.cards import *
+from controllers.controller_card import *
 from server import server
 
 

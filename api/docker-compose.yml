@@ -14,15 +14,15 @@ services:
   server:
     build: .
     container_name:  api_globocard
-    command: python start.py
+    environment:
+      MONGO_HOST: mongodb
+    command: sh -c "ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && echo America/Sao_Paulo > /etc/timezone && python start.py"
     depends_on:
       - mongodb
     env_file:
       - .env
-    environment:
-      MONGO_HOST: mongodb
     ports:
-      - "5000:5000"
+      - 5000:5000
     restart: always
     volumes:
       - ./:/code

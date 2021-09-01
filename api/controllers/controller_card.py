@@ -2,11 +2,12 @@ from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 from bson.objectid import ObjectId
-from services.cards_service import *
+from services.service_card import *
 
 app, api, mongo = server.app, server.api, server.mongo
 
 class CardClass(Resource):
+
     def get(self):
         cards = getAllCards()
         if cards is not False:

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 from bson.objectid import ObjectId
-
+import datetime
 
 app, api, mongo = server.app, server.api, server.mongo
 
@@ -20,6 +20,7 @@ def getAllCards():
         return False
 
 def insertCard(body):
+    body['data_criacao'] = datetime.datetime.now()
     cardResult = mongo.db.cards.insert_one(body)
     if cardResult.inserted_id:
         return True
@@ -34,6 +35,7 @@ def deleteCard(id):
         return False
 
 def updateCard(body,id):
+    body['data_modificacao'] = datetime.datetime.now()
     cardResult = mongo.db.cards.update_one({"_id":ObjectId(id)}, {"$set": body})
     if cardResult.modified_count == 1:
         return True
