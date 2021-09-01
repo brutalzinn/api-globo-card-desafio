@@ -8,12 +8,16 @@ app, api, mongo = server.app, server.api, server.mongo
 
 class CardClass(Resource):
 
-    def get(self):
+
+    def get(self,card_id = None):
+      if card_id == None:
         cards = getAllCards()
-        if cards is not False:
-          return cards
-        else:
-          return ({"message":"Database is empty."}, 400)
+      else:
+        cards = getOneCard(card_id)
+      if cards is not False:
+        return cards
+      else:
+        return ({"message":"Database is empty."}, 400)
 
 
     def post(self):
@@ -24,7 +28,7 @@ class CardClass(Resource):
           return ({"message":"Card cant be inserted"}, 400)
 
 
-    def delete(self,card_id):
+    def delete(self, card_id):
         if deleteCard(card_id):
           return ({"message":"Card deleted successfully"}, 200)
         else:

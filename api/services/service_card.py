@@ -6,14 +6,24 @@ import datetime
 
 app, api, mongo = server.app, server.api, server.mongo
 
+
+def getOneCard(id):
+    cardResult = mongo.db.cards.find_one({"_id":ObjectId(id)})
+    if cardResult:
+        cardResult['_id'] = str(cardResult['_id'])
+        return jsonify(cardResult)
+    else:
+        return False
+
+
 def getAllCards():
-    cards = mongo.db.cards.find()
+    cardResult = mongo.db.cards.find()
     cardList = []
-    for c in cards:
+    for c in cardResult:
         if 'tags' in c:
-            cardList.append({'id':str(c['_id']),'texto': c['texto'],'tags':c['tags']})
+            cardList.append({'_id':str(c['_id']),'texto': c['texto'],'tags':c['tags']})
         else:
-            cardList.append({'id':str(c['_id']),'texto': c['texto']})
+            cardList.append({'_id':str(c['_id']),'texto': c['texto']})
     if len(cardList) > 0:
         return jsonify(cardList)
     else:
