@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
-from bson.objectid import ObjectId
 from services.service_card import *
 
 app, api, mongo = server.app, server.api, server.mongo
@@ -9,9 +8,9 @@ app, api, mongo = server.app, server.api, server.mongo
 class CardClass(Resource):
 
 
-    def get(self,card_id = None):
+    def get(self,card_id = None, tag_id = None):
       if card_id == None:
-        cards = getAllCards()
+        cards = getAllCards(tag_id)
       else:
         cards = getOneCard(card_id)
       if cards is not False:
@@ -43,6 +42,6 @@ class CardClass(Resource):
           return ({"message":"Card cant be updated"}, 400)
 
 
-
+api.add_resource(CardClass, '/cards/tag/<tag_id>')
 api.add_resource(CardClass, '/cards/<card_id>')
 api.add_resource(CardClass, '/cards')

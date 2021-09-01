@@ -11,19 +11,19 @@ def getOneCard(id):
     cardResult = mongo.db.cards.find_one({"_id":ObjectId(id)})
     if cardResult:
         cardResult['_id'] = str(cardResult['_id'])
+        cardResult['id'] = cardResult.pop('_id')
         return jsonify(cardResult)
     else:
         return False
 
 
-def getAllCards():
-    cardResult = mongo.db.cards.find()
+def getAllCards(tag_id):
+    cardResult = mongo.db.cards.find({"tags":tag_id})
     cardList = []
     for c in cardResult:
-        if 'tags' in c:
-            cardList.append({'_id':str(c['_id']),'texto': c['texto'],'tags':c['tags']})
-        else:
-            cardList.append({'_id':str(c['_id']),'texto': c['texto']})
+        c['_id'] = str(c['_id'])
+        c['id'] = c.pop('_id')
+        cardList.append(c)
     if len(cardList) > 0:
         return jsonify(cardList)
     else:
@@ -31,6 +31,11 @@ def getAllCards():
 
 def insertCard(body):
     body['data_criacao'] = datetime.datetime.now()
+    listTags = []
+    if 'tags' in body:
+        for t in body['tags']:
+            listTags.append(ObjectId(t))
+        body['tags'] = listTags
     cardResult = mongo.db.cards.insert_one(body)
     if cardResult.inserted_id:
         return True
