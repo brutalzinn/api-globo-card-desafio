@@ -11,6 +11,7 @@ class CardClass(Resource):
     def get(self,card_id = None, tag_id = None):
       if card_id == None:
         cards = getAllCards(tag_id)
+        print('get all cards')
       else:
         cards = getOneCard(card_id)
       if cards is not False:

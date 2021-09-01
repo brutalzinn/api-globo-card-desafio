@@ -18,11 +18,26 @@ def getOneCard(id):
 
 
 def getAllCards(tag_id):
-    cardResult = mongo.db.cards.find({"tags":tag_id})
+    cardResult = mongo.db.cards.aggregate([{
+   "$lookup":
+     {
+       "from": "tags",
+       "localField": "tags",
+       "foreignField": "_id",
+       "as": "tags"
+     }
+}])
     cardList = []
     for c in cardResult:
+        listTags = []
         c['_id'] = str(c['_id'])
         c['id'] = c.pop('_id')
+        if 'tags' in c:
+            for t in c['tags']:
+                t['_id'] = str(t['_id'])
+                t['id'] = t.pop('_id')
+                listTags.append(t)
+            c['tags'] = listTags
         cardList.append(c)
     if len(cardList) > 0:
         return jsonify(cardList)
