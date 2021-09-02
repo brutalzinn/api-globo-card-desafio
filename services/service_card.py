@@ -27,7 +27,6 @@ def getAllCards(tag_id):
        "as": "tags"
      }
 }]
-
     if tag_id:
         filtros.append({"$match": {
         "tags._id": ObjectId(tag_id)
