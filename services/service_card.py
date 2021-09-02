@@ -3,7 +3,7 @@ from flask_restx import Resource
 from server import server
 from bson.objectid import ObjectId
 import datetime
-
+import math
 app, api, mongo = server.app, server.api, server.mongo
 
 
@@ -17,7 +17,7 @@ def getOneCard(id):
         return False
 
 
-def getAllCards(tag_id):
+def getAllCards(tag_id, page , limit):
     filtros = [{
    "$lookup":
      {
@@ -26,12 +26,23 @@ def getAllCards(tag_id):
        "foreignField": "_id",
        "as": "tags"
      }
-}]
+},
+{ "$skip": (page - 1)* limit},
+{ "$limit": limit * 1 }]
+
+
     if tag_id:
         filtros.append({"$match": {
         "tags._id": ObjectId(tag_id)
       }})
     cardResult = mongo.db.cards.aggregate(filtros)
+
+    calcPages = mongo.db.cards.find().count() % limit
+    totalPage = 0
+    if calcPages != 0:
+        totalPage = totalPage + 1
+    totalPage = totalPage + math.trunc(mongo.db.cards.find().count() / limit)
+
     cardList = []
     for c in cardResult:
         listTags = []
@@ -45,7 +56,7 @@ def getAllCards(tag_id):
             c['tags'] = listTags
         cardList.append(c)
     if len(cardList) > 0:
-        return jsonify(cardList)
+        return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
     else:
         return False
 

@@ -8,9 +8,9 @@ app, api, mongo = server.app, server.api, server.mongo
 class CardClass(Resource):
 
 
-    def get(self,card_id = None, tag_id = None):
+    def get(self,card_id = None, tag_id = None, page = 1, limit = 3):
       if card_id == None:
-        cards = getAllCards(tag_id)
+        cards = getAllCards(tag_id, page , limit)
         print('get all cards')
       else:
         cards = getOneCard(card_id)
