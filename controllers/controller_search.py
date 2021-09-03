@@ -3,13 +3,13 @@ from flask.json import jsonify
 from flask_restx import Resource
 from flask import Response
 from server import server
-
+import math
 app, api, mongo = server.app, server.api, server.mongo
 
-@app.route('/search', methods=["POST"])
-def search():
-    page = 1
-    limit = 5
+@app.route('/search/<page>/<limit>', methods=["POST"])
+def search(page, limit):
+    page = int(page)
+    limit = int(limit)
     print('Search hello world')
     keys = api.payload['key'].upper().split(" ")
     regex = ''
@@ -50,6 +50,12 @@ def search():
 ]
 
     cardResult = mongo.db.cards.aggregate(filters)
+    calcPages = mongo.db.cards.find().count() % limit
+    totalPage = 0
+    if calcPages != 0:
+        totalPage = totalPage + 1
+    totalPage = totalPage + math.trunc(mongo.db.cards.find().count() / limit)
+
     cardList = []
     for c in cardResult:
         listTags = []
@@ -63,5 +69,5 @@ def search():
             c['tags'] = listTags
         cardList.append(c)
 
-    return jsonify([cardList])
+    return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
 
