@@ -58,7 +58,7 @@ def getAllCards(tag_id, page , limit):
             c['tags'] = listTags
         cardList.append(c)
     if len(cardList) > 0:
-        return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
+        return {"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList}
     else:
         return False
 

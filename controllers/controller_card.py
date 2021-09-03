@@ -1,4 +1,7 @@
+from flask.helpers import make_response
+from flask.typing import HeadersValue, StatusCode
 from flask_restx import Resource
+from werkzeug.wrappers import response
 from server import server
 from services.service_card import *
 
@@ -13,8 +16,10 @@ class CardClass(Resource):
         print('get all cards')
       else:
         cards = getOneCard(card_id)
+      headers = {}
+      headers['Access-Control-Allow-Origin'] = '*'
       if cards is not False:
-        return cards
+        return make_response(cards,200,headers)
       else:
         return ({"message":"Database is empty."}, 400)
 
