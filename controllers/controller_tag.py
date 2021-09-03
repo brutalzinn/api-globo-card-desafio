@@ -39,8 +39,3 @@ class TagClass(Resource):
           return ({"message":"Tag updated successfully"}, 200)
         else:
           return ({"message":"Tag cant be updated"}, 400)
-
-
-
-api.add_resource(TagClass, '/tags/<tag_id>')
-api.add_resource(TagClass, '/tags')

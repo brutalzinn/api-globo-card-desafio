@@ -40,9 +40,3 @@ class CardClass(Resource):
           return ({"message":"Card updated successfully"}, 200)
         else:
           return ({"message":"Card cant be updated"}, 400)
-
-
-# api.add_resource(CardClass, '/cards/tag/<tag_id>')
-api.add_resource(CardClass, '/cards/list/<page>/<limit>')
-api.add_resource(CardClass, '/cards/<card_id>')
-api.add_resource(CardClass, '/cards')
