@@ -4,6 +4,8 @@ from server import server
 from bson.objectid import ObjectId
 import datetime
 import math
+from utils.utils_tag import *
+
 app, api, mongo = server.app, server.api, server.mongo
 
 
@@ -18,7 +20,7 @@ def getOneCard(id):
 
 
 def getAllCards(tag_id, page , limit):
-    filtros = [{
+    filters = [{
    "$lookup":
      {
        "from": "tags",
@@ -32,10 +34,10 @@ def getAllCards(tag_id, page , limit):
 
 
     if tag_id:
-        filtros.append({"$match": {
+        filters.append({"$match": {
         "tags._id": ObjectId(tag_id)
       }})
-    cardResult = mongo.db.cards.aggregate(filtros)
+    cardResult = mongo.db.cards.aggregate(filters)
 
     calcPages = mongo.db.cards.find().count() % limit
     totalPage = 0
@@ -62,11 +64,8 @@ def getAllCards(tag_id, page , limit):
 
 def insertCard(body):
     body['data_criacao'] = datetime.datetime.now()
-    listTags = []
     if 'tags' in body:
-        for t in body['tags']:
-            listTags.append(ObjectId(t))
-        body['tags'] = listTags
+        body['tags'] = tagCreator(body['tags'])
     cardResult = mongo.db.cards.insert_one(body)
     if cardResult.inserted_id:
         return True
@@ -74,6 +73,11 @@ def insertCard(body):
         return False
 
 def deleteCard(id):
+    cardFinder = mongo.db.cards.find_one({"_id":ObjectId(id)})
+    if "tags" in cardFinder:
+        tagDelete(cardFinder['tags'])
+
+
     cardResult = mongo.db.cards.delete_one({"_id":ObjectId(id)})
     if cardResult.deleted_count == 1:
         return True

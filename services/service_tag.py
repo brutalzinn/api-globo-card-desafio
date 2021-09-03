@@ -31,9 +31,14 @@ def getAllTags():
 
 def insertTag(body):
     body['data_criacao'] = datetime.datetime.now()
+    nameConverter = body['name'].upper().split(' ')
+    nameKeys = []
+    for n in nameConverter:
+        nameKeys.append(n)
+    body['keys'] = nameKeys
     tagResult = mongo.db.tags.insert_one(body)
     if tagResult.inserted_id:
-        return True
+        return tagResult.inserted_id
     else:
         return False
 

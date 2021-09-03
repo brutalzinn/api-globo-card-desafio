@@ -1,4 +1,3 @@
-from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 from services.service_card import *
@@ -10,7 +9,7 @@ class CardClass(Resource):
 
     def get(self,card_id = None, tag_id = None, page = 1, limit = 3):
       if card_id == None:
-        cards = getAllCards(tag_id, page , limit)
+        cards = getAllCards(tag_id, int(page) , int(limit))
         print('get all cards')
       else:
         cards = getOneCard(card_id)
@@ -43,6 +42,7 @@ class CardClass(Resource):
           return ({"message":"Card cant be updated"}, 400)
 
 
-api.add_resource(CardClass, '/cards/tag/<tag_id>')
+# api.add_resource(CardClass, '/cards/tag/<tag_id>')
+api.add_resource(CardClass, '/cards/list/<page>/<limit>')
 api.add_resource(CardClass, '/cards/<card_id>')
 api.add_resource(CardClass, '/cards')

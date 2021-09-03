@@ -1,4 +1,3 @@
-from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 from services.service_tag import *
