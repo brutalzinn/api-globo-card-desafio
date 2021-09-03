@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_restx import Resource, Api
 from flask_pymongo import PyMongo
 import os
@@ -7,6 +8,7 @@ import os
 class Server():
     def __init__(self):
         self.app = Flask(__name__)
+        CORS(self.app)
         self.app.config["MONGO_URI"] = f"mongodb://{os.environ['MONGO_HOST']}:27017/{os.environ['MONGO_DB_NAME']}"
         self.api = Api(self.app)
         self.mongo = PyMongo(self.app)

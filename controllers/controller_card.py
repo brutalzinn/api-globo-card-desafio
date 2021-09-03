@@ -6,7 +6,6 @@ from server import server
 from services.service_card import *
 
 app, api, mongo = server.app, server.api, server.mongo
-
 class CardClass(Resource):
 
 
@@ -16,10 +15,9 @@ class CardClass(Resource):
         print('get all cards')
       else:
         cards = getOneCard(card_id)
-      headers = {}
-      headers['Access-Control-Allow-Origin'] = '*'
       if cards is not False:
-        return make_response(cards,200,headers)
+
+        return make_response(cards,200)
       else:
         return ({"message":"Database is empty."}, 400)
 
@@ -27,7 +25,7 @@ class CardClass(Resource):
     def post(self):
         req = api.payload
         if insertCard(req):
-          return ({"message":"Card inserted successfully"}, 201)
+          return make_response({"message":"Card inserted successfully"},201)
         else:
           return ({"message":"Card cant be inserted"}, 400)
 
