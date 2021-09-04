@@ -27,6 +27,6 @@ class Server():
         if production == 0:
             self.app.run(debug=True,host="0.0.0.0")
         else:
-            self.app.run(os.environ.get('PORT'))
+            self.app.run(os.environ['PORT'])
 
 server = Server()
