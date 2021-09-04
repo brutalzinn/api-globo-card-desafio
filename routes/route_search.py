@@ -76,6 +76,7 @@ def search(page, limit):
     if calcPages != 0:
         totalPage = totalPage + 1
     totalPage = totalPage + math.trunc(n  / limit)
-
+    if n == 0:
+        return ({"message":f"Cant find by {api.payload['key']}"}, 400)
     return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
 
