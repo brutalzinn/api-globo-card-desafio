@@ -11,7 +11,6 @@ app, api, mongo = server.app, server.api, server.mongo
 def search(page, limit):
     page = int(page)
     limit = int(limit)
-    print('Search hello world')
     keys = api.payload['key'].upper().split(" ")
     regex = ''
     for k in keys:
@@ -30,11 +29,12 @@ def search(page, limit):
             break
         n = n + 1
     filters = { "keys": { "$regex": regexFinal, "$options": "i" }}
-    print(regexFinal)
     tagsResult = mongo.db.tags.find_one(filters)
+
     if tagsResult is None:
         return ({"message":f"Cant find by {api.payload['key']}"}, 400)
-    filters = [{
+
+    filtersAdvanced = [{
    "$lookup":
      {
        "from": "tags",
@@ -50,12 +50,9 @@ def search(page, limit):
 }}
 ]
 
-    cardResult = mongo.db.cards.aggregate(filters)
-    calcPages = mongo.db.cards.find().count() % limit
-    totalPage = 0
-    if calcPages != 0:
-        totalPage = totalPage + 1
-    totalPage = totalPage + math.trunc(mongo.db.cards.find().count() / limit)
+    cardResult = mongo.db.cards.aggregate(filtersAdvanced)
+
+
 
     cardList = []
     for c in cardResult:
@@ -69,6 +66,12 @@ def search(page, limit):
                 listTags.append(t)
             c['tags'] = listTags
         cardList.append(c)
+    calcPages = len(cardList) % limit
 
+    totalPage = 0
+    if calcPages != 0:
+        totalPage = totalPage + 1
+
+    totalPage = totalPage + math.trunc(len(cardList) / limit)
     return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
 
