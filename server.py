@@ -24,6 +24,9 @@ class Server():
         self.mongo = PyMongo(self.app)
 
     def run(self):
-        self.app.run(debug=True,host="0.0.0.0")
+        if production == 0:
+            self.app.run(debug=True,host="0.0.0.0")
+        else:
+            self.app.run(os.environ.get('PORT'))
 
 server = Server()
