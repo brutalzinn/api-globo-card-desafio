@@ -2,6 +2,7 @@ from flask import Flask, jsonify, Response
 from flask_restx import Resource
 from server import server
 from bson.objectid import ObjectId
+import unidecode
 import datetime
 
 app, api, mongo = server.app, server.api, server.mongo
@@ -34,7 +35,7 @@ def insertTag(body):
     nameConverter = body['name'].upper().split(' ')
     nameKeys = []
     for n in nameConverter:
-        nameKeys.append(n)
+        nameKeys.append(unidecode.unidecode(n))
     body['keys'] = nameKeys
     tagResult = mongo.db.tags.insert_one(body)
     if tagResult.inserted_id:

@@ -29,6 +29,7 @@ def getAllCards(tag_id, page , limit):
        "as": "tags"
      }
 },
+{ "$sort": { "data_criacao": -1}},
 { "$skip": (page - 1)* limit},
 { "$limit": limit * 1 }]
 

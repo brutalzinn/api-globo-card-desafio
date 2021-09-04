@@ -1,5 +1,6 @@
 from services.service_tag import *
 
+
 def tagCreator(list):
     listTags = []
     for t in list:

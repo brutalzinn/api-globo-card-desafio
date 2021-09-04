@@ -47,8 +47,10 @@ def search(page, limit):
 {"$match": {
     "tags.keys": { "$regex": regexFinal, "$options": "i" }
 }},
+{ "$sort": { "data_criacao": -1}},
 { "$skip": (page - 1)* limit},
 { "$limit": limit * 1 }
+
 ]
     cardResult = mongo.db.cards.aggregate(filtersAdvanced)
     cardList = []
