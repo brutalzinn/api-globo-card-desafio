@@ -6,12 +6,12 @@ import os
 
 from flask_restx.namespace import Namespace
 
-production = int(os.environ['PRODUCTION'])
 class Server():
     def __init__(self):
         self.app = Flask(__name__)
+        self.production = int(os.environ['PRODUCTION'])
         CORS(self.app)
-        if production == 0:
+        if self.production == 0:
             self.app.config["MONGO_URI"] = f"mongodb://{os.environ['MONGO_HOST']}:27017/{os.environ['MONGO_DB_NAME']}"
         else:
             self.app.config["MONGO_URI"] = os.environ['MONGO_DB_ATLAS']
@@ -24,9 +24,9 @@ class Server():
         self.mongo = PyMongo(self.app)
 
     def run(self):
-        if production == 0:
+        if self.production == 0:
             self.app.run(debug=True,host="0.0.0.0")
         else:
-            self.app.run(os.environ['PORT'])
+            self.app.run(port=int(os.environ['PORT']), host="0.0.0.0")
 
 server = Server()
