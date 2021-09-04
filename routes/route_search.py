@@ -11,7 +11,9 @@ app, api, mongo = server.app, server.api, server.mongo
 def search(page, limit):
     page = int(page)
     limit = int(limit)
+    print('Search hello world',api.payload['key'])
     keys = api.payload['key'].upper().split(" ")
+
     regex = ''
     for k in keys:
         regex = f'^{k}|' + regex
@@ -19,21 +21,20 @@ def search(page, limit):
     max = len(regex)
     n = 1
     regexFinal = ''
-    print(max)
 
     for l in regex:
         print(l)
         if n != max:
             regexFinal = regexFinal + l
+            n = n + 1
         else:
             break
-        n = n + 1
+
     filters = { "keys": { "$regex": regexFinal, "$options": "i" }}
-    tagsResult = mongo.db.tags.find_one(filters)
-
-    if tagsResult is None:
-        return ({"message":f"Cant find by {api.payload['key']}"}, 400)
-
+    # print(regexFinal)
+    # tagsResult = mongo.db.tags.find_one(filters)
+    # if tagsResult is None:
+    #     return ({"message":f"Cant find by {api.payload['key']}"}, 400)
     filtersAdvanced = [{
    "$lookup":
      {
@@ -43,17 +44,13 @@ def search(page, limit):
        "as": "tags"
      }
 },
-{ "$skip": (page - 1)* limit},
-{ "$limit": limit * 1 },
 {"$match": {
-    "tags._id": ObjectId(tagsResult['_id'])
-}}
+    "tags.keys": { "$regex": regexFinal, "$options": "i" }
+}},
+{ "$skip": (page - 1)* limit},
+{ "$limit": limit * 1 }
 ]
-
     cardResult = mongo.db.cards.aggregate(filtersAdvanced)
-
-
-
     cardList = []
     for c in cardResult:
         listTags = []
@@ -66,12 +63,19 @@ def search(page, limit):
                 listTags.append(t)
             c['tags'] = listTags
         cardList.append(c)
-    calcPages = len(cardList) % limit
 
+    filtersAdvanced.pop(-1)
+    filtersAdvanced.pop(-1)
+    cardCount = mongo.db.cards.aggregate(filtersAdvanced)
+    n = 0
+    for obj in cardCount:
+        n = n + 1
+
+    calcPages = n % limit
     totalPage = 0
     if calcPages != 0:
         totalPage = totalPage + 1
+    totalPage = totalPage + math.trunc(n  / limit)
 
-    totalPage = totalPage + math.trunc(len(cardList) / limit)
     return jsonify({"totalPage":totalPage,"currentPage":page,"total":len(cardList),"cards":cardList})
 
