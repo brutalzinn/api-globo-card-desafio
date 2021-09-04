@@ -4,7 +4,6 @@ from flask_restx import Resource, Namespace
 from werkzeug.wrappers import response
 from server import server
 from services.service_card import *
-from models.models_cards import *
 app, api, mongo = server.app, server.api, server.mongo
 
 
