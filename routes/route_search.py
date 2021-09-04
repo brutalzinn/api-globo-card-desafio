@@ -7,6 +7,7 @@ import math
 app, api, mongo = server.app, server.api, server.mongo
 
 #ADVANCED SEARCH ROUTE WITH PAGINATION
+
 @app.route('/v1/search/<page>/<limit>', methods=["POST"])
 def search(page, limit):
     page = int(page)

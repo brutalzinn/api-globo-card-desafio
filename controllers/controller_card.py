@@ -1,14 +1,15 @@
 from flask.helpers import make_response
 from flask.typing import HeadersValue, StatusCode
-from flask_restx import Resource
+from flask_restx import Resource, Namespace
 from werkzeug.wrappers import response
 from server import server
 from services.service_card import *
-
+from models.models_cards import *
 app, api, mongo = server.app, server.api, server.mongo
+
+
+
 class CardClass(Resource):
-
-
     def get(self,card_id = None, tag_id = None, page = 1, limit = 3):
       if card_id == None:
         cards = getAllCards(tag_id, int(page) , int(limit))
