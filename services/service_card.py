@@ -87,6 +87,10 @@ def deleteCard(id):
 
 def updateCard(body,id):
     body['data_modificacao'] = datetime.datetime.now()
+    cardFinder = mongo.db.cards.find_one({"_id":ObjectId(id)})
+    if 'tags' in body:
+        tagDelete(cardFinder['tags'])
+        body['tags'] = tagCreator(body['tags'])
     cardResult = mongo.db.cards.update_one({"_id":ObjectId(id)}, {"$set": body})
     if cardResult.modified_count == 1:
         return True
