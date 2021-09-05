@@ -4,7 +4,7 @@ from flask_restx import fields
 from server import server
 from flask_restx import Resource
 from services.service_search import search
-app, api, mongo = server.app, server.api, server.mongo
+app, api = server.app, server.api
 
 body_fields = api.model('Busca', {
     'key': fields.String(description='Nome da tag', required=True,discriminator=True, enum=["nome da tag"]),

@@ -41,7 +41,7 @@ def getOneCard(id):
         return False
 
 
-def getAllCards(tag_id, page , limit):
+def getAllCards( page , limit):
     filters = [{
    "$lookup":
      {
@@ -56,10 +56,10 @@ def getAllCards(tag_id, page , limit):
 { "$limit": limit * 1 }]
 
 
-    if tag_id:
-        filters.append({"$match": {
-        "tags._id": ObjectId(tag_id)
-      }})
+    # if tag_id:
+    #     filters.append({"$match": {
+    #     "tags._id": ObjectId(tag_id)
+    #   }})
     cardResult = mongo.db.cards.aggregate(filters)
 
     calcPages = mongo.db.cards.find().count() % limit

@@ -3,9 +3,10 @@ from flask_cors import CORS
 from flask_restx import Resource, Api
 from flask_pymongo import PyMongo
 import os
+from dotenv import load_dotenv
 
 from flask_restx.namespace import Namespace
-
+load_dotenv()
 class Server():
     def __init__(self):
         self.app = Flask(__name__)
