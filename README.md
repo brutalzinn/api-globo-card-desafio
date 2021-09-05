@@ -2,7 +2,7 @@
 
 Esse projeto é uma API web desenvolvida com Python e MongoDB para ser utilizada na criação de cards e tags. Com objetivo de ser utilizada em conjunto com uma interface gráfica para a criação de Cards de conteúdo esportivos(Insights) para o desafio Globo. A descrição de todas as rotas pode ser encontrada ao iniciar em modo desenvolvedor.
 
-A acessando a url(padrão) http://localhost:5000 diretamente no navegador ou [clicando aqui](https://api-globo-card.herokuapp.com/). 
+A acessando a url(padrão) http://localhost:5000 diretamente no navegador ou, [clicando aqui](https://api-globo-card.herokuapp.com/) para visualizar online. 
 É possível efetuar testes em cada rota e analisar cada uma especificamente.
 
 Essa api está hospedada no Heroku e utilizando o método de deploy automático.
