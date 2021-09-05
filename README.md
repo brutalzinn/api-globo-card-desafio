@@ -1,6 +1,6 @@
 # Api Globocard
 
-Essa é uma API web para ser utilizada na criação de cards e tags. Com objetivo de ser utilizada em conjunto com uma interface gráfica para a criação de Cards de conteúdo esportivos(Insights). A documentação dessa api pode ser encontrada ao iniciar em modo desenvolvedor, e acessando a url(padrão) http://localhost:5000 diretamente no navegador ou [clicando aqui](https://api-globo-card.herokuapp.com/). É possível efetuar testes em cada rota e visualizar cada uma especificamente.
+Essa é uma API web para ser utilizada na criação de cards, tags e desenvolvida para o desafio Globo. Com objetivo de ser utilizada em conjunto com uma interface gráfica para a criação de Cards de conteúdo esportivos(Insights). A documentação dessa api pode ser encontrada ao iniciar em modo desenvolvedor, e acessando a url(padrão) http://localhost:5000 diretamente no navegador ou [clicando aqui](https://api-globo-card.herokuapp.com/). É possível efetuar testes em cada rota e visualizar cada uma especificamente.
 Essa api está hospedada no Heroku e utilizando o método de deploy automático.
 Você pode acessar e testar seu funcionamento em modo de produção [clicando aqui](https://api-globo-card.herokuapp.com/)
 
