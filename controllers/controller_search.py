@@ -10,8 +10,8 @@ body_fields = api.model('Busca', {
     'key': fields.String(description='Nome da tag', required=True,discriminator=True, enum=["nome da tag"]),
 })
 
-class SearchClass(Resource):
+class search_class(Resource):
     @api.doc(body=body_fields,params={'limit': 'Máximo de itens por página','page':'Número da página'})
     def post(self,page,limit):
-        return make_response(search(page,limit),200)
+        return make_response(search(page,limit))
 

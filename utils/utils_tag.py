@@ -1,16 +1,16 @@
 from services.service_tag import *
 
 
-def tagCreator(list):
+def tag_creator(list):
     listTags = []
     for t in list:
         tag = {}
         tag['name'] = t
-        listTags.append(insertTag(tag))
+        listTags.append(insert_tag(tag))
     return listTags
 
-def tagDelete(list):
+def tag_delete(list):
     listTags = []
     for t in list:
-        deleteTag(str(t))
+        delete_tag(str(t))
     return listTags

@@ -7,7 +7,7 @@ import datetime
 app, api, mongo = server.app, server.api, server.mongo
 
 
-def getOneTag(id):
+def get_one_tag(id):
     tagResult = mongo.db.tags.find_one({"_id":ObjectId(id)})
     if tagResult:
         tagResult['_id'] = str(tagResult['_id'])
@@ -17,7 +17,7 @@ def getOneTag(id):
         return False
 
 
-def getAllTags():
+def get_all_tags():
     tagResult = mongo.db.tags.find()
     cardList = []
     for c in tagResult:
@@ -29,7 +29,7 @@ def getAllTags():
     else:
         return False
 
-def insertTag(body):
+def insert_tag(body):
     body['data_criacao'] = datetime.datetime.now()
     nameConverter = body['name'].upper().split(' ')
     nameKeys = []
@@ -42,14 +42,14 @@ def insertTag(body):
     else:
         return False
 
-def deleteTag(id):
+def delete_tag(id):
     tagResult = mongo.db.tags.delete_one({"_id":ObjectId(id)})
     if tagResult.deleted_count == 1:
         return True
     else:
         return False
 
-def updateTag(body,id):
+def update_tag(body,id):
     body['data_modificacao'] = datetime.datetime.now()
     nameConverter = body['name'].upper().split(' ')
     nameKeys = []

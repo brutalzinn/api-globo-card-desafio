@@ -8,8 +8,18 @@ class Card:
             self.tags = req['tags']
         else:
             self.tags = None
+
     def validate(self):
-        if self.texto is not None and type(self.texto) is str and self.tags is not None and type(self.tags) is list:
+        code = 0
+        if self.texto is not None and type(self.texto) is str:
+            code += 2
+        if self.tags is not None and type(self.tags) is list:
+            code += 4
+        elif self.tags is not None and type(self.tags) is not list:
+            code += 8
+        if code == 6:
+            return True
+        if code == 2:
             return True
         else:
             return False

@@ -9,7 +9,7 @@ from utils.utils_tag import *
 app, api, mongo = server.app, server.api, server.mongo
 
 
-def getOneCard(id):
+def get_one_card(id):
 
     filters = [{
     "$lookup":
@@ -41,7 +41,7 @@ def getOneCard(id):
         return False
 
 
-def getAllCards( page , limit):
+def get_all_cards( page , limit):
     filters = [{
    "$lookup":
      {
@@ -85,20 +85,20 @@ def getAllCards( page , limit):
     else:
         return False
 
-def insertCard(body):
+def insert_card(body):
     body['data_criacao'] = datetime.datetime.now()
     if 'tags' in body:
-        body['tags'] = tagCreator(body['tags'])
+        body['tags'] = tag_creator(body['tags'])
     cardResult = mongo.db.cards.insert_one(body)
     if cardResult.inserted_id:
         return True
     else:
         return False
 
-def deleteCard(id):
+def delete_card(id):
     cardFinder = mongo.db.cards.find_one({"_id":ObjectId(id)})
     if "tags" in cardFinder:
-        tagDelete(cardFinder['tags'])
+        tag_delete(cardFinder['tags'])
 
 
     cardResult = mongo.db.cards.delete_one({"_id":ObjectId(id)})
@@ -107,12 +107,12 @@ def deleteCard(id):
     else:
         return False
 
-def updateCard(body,id):
+def update_card(body,id):
     body['data_modificacao'] = datetime.datetime.now()
     cardFinder = mongo.db.cards.find_one({"_id":ObjectId(id)})
     if 'tags' in body:
-        tagDelete(cardFinder['tags'])
-        body['tags'] = tagCreator(body['tags'])
+        tag_delete(cardFinder['tags'])
+        body['tags'] = tag_creator(body['tags'])
     cardResult = mongo.db.cards.update_one({"_id":ObjectId(id)}, {"$set": body})
     if cardResult.modified_count == 1:
         return True
