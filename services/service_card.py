@@ -35,8 +35,8 @@ def getOneCard(id):
                 listTags.append(t)
             c['tags'] = listTags
         cardList.append(c)
-    if len(cardList) > 0:
-        return jsonify(cardList)
+    if len(cardList) == 1:
+        return jsonify(cardList[0])
     else:
         return False
 
