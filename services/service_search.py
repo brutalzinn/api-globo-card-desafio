@@ -4,12 +4,14 @@ from flask_restx import Resource,Namespace
 from flask import Response
 from server import server
 import math
+import unidecode
+
 app, api, mongo = server.app, server.api, server.mongo
 
 def search(page, limit):
     page = int(page)
     limit = int(limit)
-    keys = api.payload['key'].upper().split(" ")
+    keys = unidecode.unidecode(api.payload['key']).upper().split(" ")
     regex = ''
     for k in keys:
         regex = f'^{k}|' + regex
