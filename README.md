@@ -40,8 +40,8 @@ Você pode acessar e testar seu funcionamento em modo de produção [clicando aq
 3. Clone esse repositório em um local de fácil localização
 4. Acesse a pasta raíz do projeto clonado.
 5. Abra um terminal na raíz do projeto.
-5. Execute o comando <b>pip install -r requirements.txt</b> para baixar todas as dependências.
-6. Crie um arquivo .env no local escolhido e insira os seguintes campos:
+6. Execute o comando <b>pip install -r requirements.txt</b> para baixar todas as dependências.
+7. Crie um arquivo .env no local escolhido e insira os seguintes campos:
 
         #COMENTE A LINHA ABAIXO PARA RODAR ESSE PROJETO COM DOCKER
         MONGO_HOST=localhost
@@ -55,8 +55,8 @@ Você pode acessar e testar seu funcionamento em modo de produção [clicando aq
         #ESSA INSTÂNCIA DO MONGO DB ATLAS É TEMPORÁRIA E PODE SER DESATIVADA SEM AVISO PRÉVIO.
         PRODUCTION=0
         MONGO_DB_ATLAS=NONE
-7. Ainda com o terminal aberto, execute o comando <b>python start.py</b>
-8. Acesse http://localhost:5000 para acessar a documentação do swagger e visualizar todas as rotas da api.
+8. Ainda com o terminal aberto, execute o comando <b>python start.py</b>
+9. Acesse http://localhost:5000 para acessar a documentação do swagger e visualizar todas as rotas da api.
 
 ## Primeiros passos(Docker)
 1. Acesse o guia de instação do mongodb e instale a opção correspondente ao seu sistema operacional [clique aqui para acessar](https://docs.mongodb.com/guides/server/install/).
