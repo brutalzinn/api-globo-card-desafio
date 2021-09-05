@@ -9,6 +9,8 @@ Essa api está hospedada no Heroku e utilizando o método de deploy automático 
 
 Você pode acessar e testar seu funcionamento em modo de produção [clicando aqui](https://api-globo-card.herokuapp.com/)
 
+Você pode acessar o repositório original da Api GloboCard [clicando aqui](https://github.com/brutalzinn/api-globo-card-desafio)
+
 
 > É necessário ter o Python 3.x instalado e o Mongo DB instalado e executando. Ou utilizar Docker.
 
