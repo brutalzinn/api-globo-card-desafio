@@ -1,14 +1,25 @@
 from flask.helpers import make_response
-from flask.typing import HeadersValue, StatusCode
-from flask_restx import Resource, Namespace
-from werkzeug.wrappers import response
+from flask_restx import Resource
 from server import server
 from services.service_card import *
+from models.models_card import Card
+from flask_restx import fields
+
+
 app, api, mongo = server.app, server.api, server.mongo
 
+# @api.tags = [{
+#             "name": "Cards",
+#             "description": "Rotas de cards"
+#         }]
 
+card_body_field = api.model('Cards', {
+    'texto': fields.String(description='Texto do card', required=True, enum=["texto"]),
+    'tags': fields.String(description='Array com nome de tags',enum=["tag1","tag2"])
+})
 
 class CardClass(Resource):
+
     def get(self,card_id = None, tag_id = None, page = 1, limit = 3):
       if card_id == None:
         cards = getAllCards(tag_id, int(page) , int(limit))
@@ -20,10 +31,12 @@ class CardClass(Resource):
         return make_response(cards,200)
       else:
         return ({"message":"Database is empty."}, 400)
-
-
+    @api.doc(body=card_body_field)
     def post(self):
         req = api.payload
+        card = Card(req)
+        if not card.validate():
+          return ({"message":"Invalid input"}, 400)
         if insertCard(req):
           return make_response({"message":"Card inserted successfully"},201)
         else:
@@ -36,9 +49,12 @@ class CardClass(Resource):
         else:
           return ({"message":"Card cant be deleted"}, 400)
 
-
+    @api.doc(body=card_body_field)
     def put(self, card_id):
         req = api.payload
+        card = Card(req)
+        if not card.validate():
+          return ({"message":"Invalid input"}, 400)
         if updateCard(req, card_id):
           return ({"message":"Card updated successfully"}, 200)
         else:

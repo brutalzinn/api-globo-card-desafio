@@ -18,6 +18,7 @@ class Server():
         self.api = Api(self.app,title='GloboCardAPI - Desafio',
             version='1.0',
             default ='Rotas',
+
             default_label='Rotas para teste',
             description='repositório original: https://github.com/brutalzinn/api-globo-card-desafio')
 

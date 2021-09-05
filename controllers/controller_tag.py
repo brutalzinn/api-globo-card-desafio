@@ -1,6 +1,7 @@
 from flask_restx import Resource
 from server import server
 from services.service_tag import *
+from models.models_tags import Tag
 
 app, api, mongo = server.app, server.api, server.mongo
 
@@ -20,6 +21,9 @@ class TagClass(Resource):
 
     def post(self):
         req = api.payload
+        tag = Tag(req)
+        if not tag.validate():
+          return ({"message":"Invalid input"}, 400)
         if insertTag(req):
           return ({"message":"Tag inserted successfully"}, 201)
         else:
@@ -35,6 +39,9 @@ class TagClass(Resource):
 
     def put(self, tag_id):
         req = api.payload
+        tag = Tag(req)
+        if not tag.validate():
+          return ({"message":"Invalid input"}, 400)
         if updateTag(req, tag_id):
           return ({"message":"Tag updated successfully"}, 200)
         else:

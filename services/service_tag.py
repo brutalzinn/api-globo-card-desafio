@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, Response
-from flask_restx import Resource
+from flask import  jsonify
 from server import server
 from bson.objectid import ObjectId
 import unidecode
@@ -52,6 +51,11 @@ def deleteTag(id):
 
 def updateTag(body,id):
     body['data_modificacao'] = datetime.datetime.now()
+    nameConverter = body['name'].upper().split(' ')
+    nameKeys = []
+    for n in nameConverter:
+        nameKeys.append(unidecode.unidecode(n))
+    body['keys'] = nameKeys
     tagResult = mongo.db.tags.update_one({"_id":ObjectId(id)}, {"$set": body})
     if tagResult.modified_count == 1:
         return True
