@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from flask_restx.namespace import Namespace
 load_dotenv()
+
 class Server():
     def __init__(self):
         self.app = Flask(__name__)
